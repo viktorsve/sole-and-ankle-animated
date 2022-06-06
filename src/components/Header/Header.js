@@ -1,16 +1,16 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from 'react'
+import styled from 'styled-components/macro'
 
-import { QUERIES, WEIGHTS } from '../../constants';
-import Logo from '../Logo';
-import Icon from '../Icon';
-import UnstyledButton from '../UnstyledButton';
-import SuperHeader from '../SuperHeader';
-import MobileMenu from '../MobileMenu';
-import VisuallyHidden from '../VisuallyHidden';
+import { QUERIES, WEIGHTS } from '../../constants'
+import Logo from '../Logo'
+import Icon from '../Icon'
+import UnstyledButton from '../UnstyledButton'
+import SuperHeader from '../SuperHeader'
+import MobileMenu from '../MobileMenu'
+import VisuallyHidden from '../VisuallyHidden'
 
 const Header = () => {
-  const [showMobileMenu, setShowMobileMenu] = React.useState(false);
+  const [showMobileMenu, setShowMobileMenu] = React.useState(false)
 
   return (
     <header>
@@ -20,24 +20,42 @@ const Header = () => {
           <Logo />
         </LogoWrapper>
         <DesktopNav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLink href='/sale'>
+            <MainText>Sale</MainText>
+            <HoverText>Sale</HoverText>
+          </NavLink>
+          <NavLink href='/new'>
+            <MainText>New&nbsp;Releases</MainText>
+            <HoverText>New&nbsp;Releases</HoverText>
+          </NavLink>
+          <NavLink href='/men'>
+            <MainText>Men</MainText>
+            <HoverText>Men</HoverText>
+          </NavLink>
+          <NavLink href='/women'>
+            <MainText>Women</MainText>
+            <HoverText>Women</HoverText>
+          </NavLink>
+          <NavLink href='/kids'>
+            <MainText>Kids</MainText>
+            <HoverText>Kids</HoverText>
+          </NavLink>
+          <NavLink href='/collections'>
+            <MainText>Collections</MainText>
+            <HoverText>Collections</HoverText>
+          </NavLink>
         </DesktopNav>
         <MobileActions>
           <ShoppingBagButton>
-            <Icon id="shopping-bag" />
+            <Icon id='shopping-bag' />
             <VisuallyHidden>Open cart</VisuallyHidden>
           </ShoppingBagButton>
           <UnstyledButton>
-            <Icon id="search" />
+            <Icon id='search' />
             <VisuallyHidden>Search</VisuallyHidden>
           </UnstyledButton>
           <UnstyledButton onClick={() => setShowMobileMenu(true)}>
-            <Icon id="menu" />
+            <Icon id='menu' />
             <VisuallyHidden>Open menu</VisuallyHidden>
           </UnstyledButton>
         </MobileActions>
@@ -49,8 +67,8 @@ const Header = () => {
         onDismiss={() => setShowMobileMenu(false)}
       />
     </header>
-  );
-};
+  )
+}
 
 const MainHeader = styled.div`
   display: flex;
@@ -69,7 +87,7 @@ const MainHeader = styled.div`
     padding-left: 16px;
     padding-right: 16px;
   }
-`;
+`
 
 const DesktopNav = styled.nav`
   display: flex;
@@ -79,7 +97,7 @@ const DesktopNav = styled.nav`
   @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
-`;
+`
 
 const MobileActions = styled.div`
   display: none;
@@ -92,7 +110,7 @@ const MobileActions = styled.div`
   @media ${QUERIES.phoneAndSmaller} {
     gap: 16px;
   }
-`;
+`
 
 const LogoWrapper = styled.div`
   flex: 1;
@@ -100,11 +118,11 @@ const LogoWrapper = styled.div`
   @media ${QUERIES.tabletAndSmaller} {
     flex: revert;
   }
-`;
+`
 
 const ShoppingBagButton = styled(UnstyledButton)`
   transform: translateX(-2px);
-`;
+`
 
 const Filler = styled.div`
   flex: 1;
@@ -112,18 +130,55 @@ const Filler = styled.div`
   @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
-`;
+`
 
 const NavLink = styled.a`
+  position: relative;
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
+  overflow: hidden;
+
   color: var(--color-gray-900);
   font-weight: ${WEIGHTS.medium};
 
   &:first-of-type {
     color: var(--color-secondary);
   }
-`;
+`
 
-export default Header;
+const MainText = styled.span`
+  display: block;
+  transform: translateY(0%);
+
+  transition: transform 500ms;
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${NavLink}:hover & {
+      transform: translateY(-100%);
+
+      transition: transform 250ms;
+    }
+  }
+`
+
+const HoverText = styled.span`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  transform: translateY(100%);
+
+  transition: transform 500ms;
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${NavLink}:hover & {
+      transform: translateY(0%);
+
+      transition: transform 250ms;
+    }
+  }
+
+  font-weight: ${WEIGHTS.bold};
+`
+
+export default Header

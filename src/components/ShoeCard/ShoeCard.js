@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from 'react'
+import styled from 'styled-components/macro'
 
-import { WEIGHTS } from '../../constants';
-import { formatPrice, pluralize, isNewShoe } from '../../utils';
-import Spacer from '../Spacer';
+import { WEIGHTS } from '../../constants'
+import { formatPrice, pluralize, isNewShoe } from '../../utils'
+import Spacer from '../Spacer'
 
 const ShoeCard = ({
   slug,
@@ -12,7 +12,7 @@ const ShoeCard = ({
   price,
   salePrice,
   releaseDate,
-  numOfColors,
+  numOfColors
 }) => {
   // There are 3 variants possible, based on the props:
   //   - new-release
@@ -35,23 +35,19 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Image alt="" src={imageSrc} />
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
+          <Image alt='' src={imageSrc} />
         </ImageWrapper>
+        {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+        {variant === 'new-release' && <NewFlag>Just released!</NewFlag>}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
           <Price
             style={{
               '--color':
-                variant === 'on-sale'
-                  ? 'var(--color-gray-700)'
-                  : undefined,
+                variant === 'on-sale' ? 'var(--color-gray-700)' : undefined,
               '--text-decoration':
-                variant === 'on-sale' ? 'line-through' : undefined,
+                variant === 'on-sale' ? 'line-through' : undefined
             }}
           >
             {formatPrice(price)}
@@ -61,53 +57,75 @@ const ShoeCard = ({
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
           {variant === 'on-sale' ? (
             <SalePrice>{formatPrice(salePrice)}</SalePrice>
-          ) : undefined}
+          ) : (
+            undefined
+          )}
         </Row>
       </Wrapper>
     </Link>
-  );
-};
+  )
+}
 
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
-`;
+`
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+`
 
 const ImageWrapper = styled.div`
-  position: relative;
-`;
+  /* Image zooms in on hover */
+  overflow: hidden;
+
+  border-radius: 16px 16px 4px 4px;
+`
 
 const Image = styled.img`
+  display: block;
   width: 100%;
-  border-radius: 16px 16px 4px 4px;
-`;
+  transform-origin: 50% 75%;
+  will-change: transform;
+  filter: brightness(90%);
+
+  transition: transform 600ms, filter 1000ms;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    ${Link}:hover &,
+    ${Link}:focus & {
+      transform: scale(1.1);
+      filter: brightness(100%);
+  
+      transition: transform 200ms, filter 500ms;
+    }
+  }
+`
 
 const Row = styled.div`
   font-size: 1rem;
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const Name = styled.h3`
   font-weight: ${WEIGHTS.medium};
   color: var(--color-gray-900);
-`;
+`
 
 const Price = styled.span`
   color: var(--color);
   text-decoration: var(--text-decoration);
-`;
+`
 
 const ColorInfo = styled.p`
   color: var(--color-gray-700);
-`;
+`
 
 const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: var(--color-primary);
-`;
+`
 
 const Flag = styled.div`
   position: absolute;
@@ -117,17 +135,30 @@ const Flag = styled.div`
   height: 32px;
   line-height: 32px;
   padding: 0 10px;
+
   font-size: ${14 / 18}rem;
   font-weight: ${WEIGHTS.bold};
+  
   color: var(--color-white);
   border-radius: 2px;
-`;
+
+  transition: transform 600ms;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    ${Link}:hover &,
+    ${Link}:focus & {
+      transform: translateY(-4px);
+  
+      transition: transform 200ms;
+    }
+  }
+`
 
 const SaleFlag = styled(Flag)`
   background-color: var(--color-primary);
-`;
+`
 const NewFlag = styled(Flag)`
   background-color: var(--color-secondary);
-`;
+`
 
-export default ShoeCard;
+export default ShoeCard
